@@ -1,36 +1,56 @@
 package africa.semicolon.logisticSystem.utils;
 
 import africa.semicolon.logisticSystem.data.models.Package;
-import africa.semicolon.logisticSystem.dtos.responses.AddPackagerResponse;
+import africa.semicolon.logisticSystem.data.models.Sender;
+import africa.semicolon.logisticSystem.data.models.TrackingData;
+import africa.semicolon.logisticSystem.dtos.requests.RegisterSenderRequest;
+import africa.semicolon.logisticSystem.dtos.responses.AddPackageResponse;
 import africa.semicolon.logisticSystem.dtos.requests.AddPackageRequest;
+import africa.semicolon.logisticSystem.dtos.responses.AddTrackingInfoResponse;
+import africa.semicolon.logisticSystem.dtos.responses.RegisterSenderResponse;
 
 public class ModelMapper {
     public static Package map(AddPackageRequest addPackageRequest){
         Package aPackage = new Package();
         aPackage.setName(addPackageRequest.getPackageDescription());
-        aPackage.setSenderPhone(addPackageRequest.getSenderPhone());
         aPackage.setDeliveryAddress(addPackageRequest.getDeliveryAddress());
-        aPackage.setSenderName(addPackageRequest.getSenderName());
+        aPackage.setSenderEmail(addPackageRequest.getSenderEmail());
         aPackage.setReceiverPhone(addPackageRequest.getReceiverPhone());
         aPackage.setReceiverName(addPackageRequest.getReceiverName());
-        aPackage.setReceiverPhone(addPackageRequest.getReceiverPhone());
         aPackage.setNetWeight(addPackageRequest.getPackageWeight());
+        return  aPackage;
 
-        return aPackage;
     }
-    public  static AddPackagerResponse map(Package savedPackage){
-       AddPackagerResponse response = new AddPackagerResponse();
-
-        //convert saved package to addpackage response
+    public static AddPackageResponse map(Package savedPackage){
+        AddPackageResponse response = new AddPackageResponse();
+        response.setPackageName(savedPackage.getName());
         response.setPackageWeight(savedPackage.getNetWeight());
         response.setReceiverName(savedPackage.getReceiverName());
-        response.setReceiverPhone(savedPackage.getReceiverPhone());
-        response.setPackageName(savedPackage.getName());
         response.setTrackingNumber(savedPackage.getId());
-        response.setReceiverAddress(savedPackage.getDeliveryAddress());
-
-        //return converted response
+        response.setReceiverPhone(savedPackage.getReceiverPhone());
+//        return converted response;
         return response;
+    }
+    public static Sender map(RegisterSenderRequest registerSenderRequest) {
+        Sender sender = new Sender();
+        sender.setSenderName(registerSenderRequest.getSenderName());
+        sender.setEmailAddress(registerSenderRequest.getSenderEmail());
+        sender.setPhoneNumber(registerSenderRequest.getPhoneNumber());
 
+        return sender;
+    }
+    public static RegisterSenderResponse map(Sender sender){
+        RegisterSenderResponse response = new RegisterSenderResponse();
+        response.setSenderEmail(sender.getEmailAddress());
+
+        return response;
+    }
+    //AddTrackingInfoRequest addTrackingInfo
+    public static AddTrackingInfoResponse map(TrackingData trackingData, Integer packageId) {
+        AddTrackingInfoResponse addTrackingInfoResponse = new AddTrackingInfoResponse();
+        addTrackingInfoResponse.setDateTime(trackingData.getDateTimeOfEvent());
+        addTrackingInfoResponse.setEvent(trackingData.getEvent());
+        addTrackingInfoResponse.setPackageId(packageId);
+        return addTrackingInfoResponse;
     }
 }

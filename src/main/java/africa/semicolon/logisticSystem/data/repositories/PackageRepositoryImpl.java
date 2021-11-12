@@ -5,12 +5,13 @@ import africa.semicolon.logisticSystem.data.models.Package;
 import java.util.*;
 
 public class PackageRepositoryImpl implements PackageRepository{
-    private  final Map<Integer,Package> database = new HashMap<>();
+    Map<Integer,Package> database = new HashMap<>();
     @Override
     public Package save(Package aPackage) {
+
         Integer id = null;
-        if(aPackage.getId() == null) {
-            id = database.size() + 1;//give me the size and add 1 into it
+        if(aPackage.getId() == null){
+            id = database.size() + 1;
             aPackage.setId(id);
         }
         id = aPackage.getId();
@@ -19,14 +20,14 @@ public class PackageRepositoryImpl implements PackageRepository{
     }
 
     @Override
-    public List<Package> findAll() {
-        List<Package> packages = new ArrayList<>();
+    public List<Package> findById() {
+        List<Package> all = new ArrayList<>();
         Set<Integer> keys = database.keySet();
-        for(Integer key : keys){
-            packages.add(database.get(key));
+        for(Integer key: keys) {
+            all.add(database.get(key));
         }
-//        keys.forEach(key ->all.add(database.get(key))); //the same as line 25 and 26.
-        return packages;
+//        keys.forEach(key -> all.add(database.get(key)));
+        return all;
     }
 
     @Override
@@ -36,7 +37,7 @@ public class PackageRepositoryImpl implements PackageRepository{
     }
 
     @Override
-    public void deleteById(Integer id) {
+    public void delete(Integer id) {
         database.remove(id);
 
     }
